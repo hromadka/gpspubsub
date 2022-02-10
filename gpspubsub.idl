@@ -1,0 +1,9 @@
+// simple position example
+struct Position {
+    @key
+    int32 providerID;
+
+    float lat;
+    float lon;
+};
+
