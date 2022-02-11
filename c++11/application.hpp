@@ -100,6 +100,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
             break;
         } else {
             std::cout << "Bad parameter." << std::endl;
+            std::cout << argv[arg_processing] << std::endl;
             show_usage = true;
             parse_result = ParseReturn::failure;
             break;
@@ -110,15 +111,15 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                     "    -d, --domain       <int>   Domain ID this application will\n" \
                     "                               subscribe in.  \n"
                     "                               Default: 0\n"\
-                    "    -f, --fake         <>      Use simulation mode.\n"\
+                    "    -f, --fake         <>      Use simulation mode.\n"
                     "                               Range: no args \n"
-                    "                               Default: false"
+                    "                               Default: false\n"
                     "    -s, --sample-count <int>   Number of samples to receive before\n"\
                     "                               cleanly shutting down. \n"
                     "                               Default: infinite\n"
                     "    -v, --verbosity    <int>   How much debugging output to show.\n"\
                     "                               Range: 0-5 \n"
-                    "                               Default: 0"
+                    "                               Default: 0\n"
                 << std::endl;
     }
 
