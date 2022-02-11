@@ -50,7 +50,7 @@ struct ApplicationArguments {
 
 	//std::string gpsport;
 	bool simulation_mode;
-	//int provider_id;
+	int provider_id;
 	//float version_num;
 };
 
@@ -74,6 +74,11 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                 && (strcmp(argv[arg_processing], "-d") == 0
                 || strcmp(argv[arg_processing], "--domain") == 0)) {
             domain_id = atoi(argv[arg_processing + 1]);
+            arg_processing += 2;
+        } else if ((argc > arg_processing + 1)
+                && (strcmp(argv[arg_processing], "-i") == 0
+                || strcmp(argv[arg_processing], "--id-provider") == 0)) {
+            provider_id = atoi(argv[arg_processing + 1]);
             arg_processing += 2;
         } else if ((argc > arg_processing + 1)
                 && (strcmp(argv[arg_processing], "-s") == 0
@@ -123,7 +128,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                 << std::endl;
     }
 
-    return { parse_result, domain_id, sample_count, verbosity, simulation_mode };
+    return { parse_result, domain_id, sample_count, verbosity, simulation_mode, provider_id };
 }
 
 }  // namespace application
