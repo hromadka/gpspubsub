@@ -95,9 +95,8 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
         } else if ((argc > arg_processing + 1)
                 && (strcmp(argv[arg_processing], "-f") == 0
                 || strcmp(argv[arg_processing], "--fake") == 0)) {
-            simulation_mode = true;  // if flag is used at all, interpret that as directive to use sim mode
-            arg_processing += 1;
-            break;
+            simulation_mode = true;  // if flag is used at all
+            arg_processing += 2;
         } else if (strcmp(argv[arg_processing], "-h") == 0
                 || strcmp(argv[arg_processing], "--help") == 0) {
             std::cout << "Example application." << std::endl;
@@ -116,8 +115,8 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                     "    -d, --domain       <int>   Domain ID this application will\n" \
                     "                               subscribe in.  \n"
                     "                               Default: 0\n"\
-                    "    -f, --fake         <>      Use simulation mode.\n"
-                    "                               Range: no args \n"
+                    "    -f, --fake         <1>     Use simulation mode.\n"
+                    "                               Range: 1 = true \n"
                     "                               Default: false\n"
                     "    -s, --sample-count <int>   Number of samples to receive before\n"\
                     "                               cleanly shutting down. \n"
