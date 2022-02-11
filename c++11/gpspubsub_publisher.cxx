@@ -46,25 +46,82 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
     // DataWriter QoS is configured in USER_QOS_PROFILES.xml
     dds::pub::DataWriter<Position> writer(publisher, topic);
 
-    // Create data sample for writing
-    Position posn;
-    for (unsigned int count = 0;
-         !shutdown_requested && count < sample_count;
-         count++) {
-        // Modify the data to be written here
-        //posn.msg("Hello GPS World! " + std::to_string(count));
-        posn.providerID(1);
-        posn.lat(12.34567);
-        posn.lon(123.45678);
-        if (simulation_mode) {
-            std::cout << "Writing fake GPS, count " << count << std::endl;
-        } else {
-            std::cout << "Writing new GPS, count " << count << std::endl;
-        }
-        writer.write(posn);
 
-        rti::util::sleep(dds::core::Duration(4));
-    }
+	if (simulation_mode) {
+		while (1) {
+			//"$GPGGA,165125.568,,,,,0,00,,,M,0.0,M,,0000*59"
+			std::string lat = "33.70024";  //PHX
+			std::string lon = "112.09462";  //PHX
+			std::string prefix = "$GPGGA,165125.568,";
+			std::string suffix = "333,00,,,M,0.0,M,,0000*99";
+			std::string rando = std::to_string(rand() % 10);
+			std::string sentence = prefix + lat + rando + ",N," + lon + rando + ",W," + suffix;
+			std::cout << sentence << std::endl;
+			
+			sleep(1);
+		}
+
+	} else {
+		// Create serial port object 
+		SerialPort serialPort("/dev/" + gpsport, BaudRate::B_4800, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
+		serialPort.SetTimeout(-1); // Block when reading until any data is received
+		
+		std::cout << "opening serial port" << std::endl;
+		
+		serialPort.Open();
+
+		std::cout << "waiting for first endline character" << std::endl;
+		
+		int length = 0;
+		char char_array[1028];
+		// Read some data back (will block until at least 1 byte is received due to the SetTimeout(-1) call above).
+		// TODO: add timer to allow graceful exit from while(1)
+		// TODO: use udev library to detect device removal
+		while (1) {
+			std::string readData;
+			serialPort.Read(readData);
+			strcpy(char_array, readData.c_str());
+
+			// look for endline trigger and take action when found
+			length = sizeof(readData);
+			for (int i = 0; i < length; i++) {
+				if (char_array[i] == '\n') {
+					// do action(s) here
+					std::cout << std::endl;
+					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
+
+                    // Create data sample for writing
+                    Position posn;
+                    for (unsigned int count = 0;
+                        !shutdown_requested && count < sample_count;
+                        count++) {
+                        // Modify the data to be written here
+                        //posn.msg("Hello GPS World! " + std::to_string(count));
+                        posn.providerID(1);
+                        posn.lat(12.34567);
+                        posn.lon(123.45678);
+                        if (simulation_mode) {
+                            std::cout << "Writing fake GPS, count " << count << std::endl;
+                        } else {
+                            std::cout << "Writing new GPS, count " << count << std::endl;
+                        }
+                        writer.write(posn);
+
+                        rti::util::sleep(dds::core::Duration(4));
+                    }
+
+
+				}
+			}
+			
+			std::cout << readData;
+		}
+		
+		// Close the serial port
+		serialPort.Close();
+
+	}
+
 }
 
 int main(int argc, char *argv[])
@@ -79,11 +136,14 @@ int main(int argc, char *argv[])
     setup_signal_handlers();
 
     std::cout << "GPS publisher example version " << std::to_string(VERSION) << std::endl;
-    std::cout << "Using port /dev/ttyUSB" << std::to_string(arguments.gpsport) << std::endl;
     std::cout << "ProviderID = " << std::to_string(arguments.provider_id) << std::endl;
-    std::cout << "Simulation Mode = " << std::to_string(arguments.simulation_mode) << std::endl;
+	if (arguments.simulation_mode) {
+		std::cout << "Simulation Mode = ON" << std::endl;
+	} else {
+        std::cout << "Using port /dev/ttyUSB" << std::to_string(arguments.gpsport) << std::endl;
+ 	}    
     
-
+    
 
     // Sets Connext verbosity to help debugging
     rti::config::Logger::instance().verbosity(arguments.verbosity);
