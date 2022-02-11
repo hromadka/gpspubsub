@@ -17,6 +17,7 @@
 #include <csignal>
 #include <dds/core/ddscore.hpp>
 
+#include <cstring>
 
 namespace application {
 
@@ -46,6 +47,10 @@ struct ApplicationArguments {
     unsigned int domain_id;
     unsigned int sample_count;
     rti::config::Verbosity verbosity;
+	std::string gpsport;
+	bool simulation_mode;
+	int provider_id;
+	float version_num;
 };
 
 // Parses application arguments for example.
@@ -57,6 +62,10 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
     unsigned int domain_id = 0;
     unsigned int sample_count = (std::numeric_limits<unsigned int>::max)();
     rti::config::Verbosity verbosity;
+	std::string gpsport = "ttyUSB0";
+	bool simulation_mode = false;
+	int provider_id = 0;
+	float version_num = 0.2;
 
     while (arg_processing < argc) {
         if ((argc > arg_processing + 1)
@@ -76,6 +85,11 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                     static_cast<rti::config::Verbosity::inner_enum>(
                             atoi(argv[arg_processing + 1]));
             arg_processing += 2;
+        } else if ((argc > arg_processing + 1)
+                && (strcmp(argv[arg_processing], "-f") == 0
+                || strcmp(argv[arg_processing], "--fake") == 0)) {
+            simulation_mode = true;  // if flag is used at all, interpret that as directive to use sim mode
+            arg_processing += 1;
         } else if (strcmp(argv[arg_processing], "-h") == 0
                 || strcmp(argv[arg_processing], "--help") == 0) {
             std::cout << "Example application." << std::endl;
@@ -94,6 +108,9 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                     "    -d, --domain       <int>   Domain ID this application will\n" \
                     "                               subscribe in.  \n"
                     "                               Default: 0\n"\
+                    "    -f, --fake         <>      Use simulation mode.\n"\
+                    "                               Range: no args \n"
+                    "                               Default: false"
                     "    -s, --sample-count <int>   Number of samples to receive before\n"\
                     "                               cleanly shutting down. \n"
                     "                               Default: infinite\n"
@@ -103,7 +120,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                 << std::endl;
     }
 
-    return { parse_result, domain_id, sample_count, verbosity };
+    return { parse_result, domain_id, sample_count, verbosity, simulation_mode };
 }
 
 }  // namespace application

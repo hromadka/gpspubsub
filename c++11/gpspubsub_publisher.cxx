@@ -29,7 +29,7 @@ using namespace mn::CppLinuxSerial;
 
 using namespace application;
 
-void run_example(unsigned int domain_id, unsigned int sample_count)
+void run_example(unsigned int domain_id, unsigned int sample_count, boolean simulation_mode)
 {
     // DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
     dds::domain::DomainParticipant participant(domain_id);
@@ -54,9 +54,11 @@ void run_example(unsigned int domain_id, unsigned int sample_count)
         posn.providerID(1);
         posn.lat(12.34567);
         posn.lon(123.45678);
-
-        std::cout << "Writing GPS, count " << count << std::endl;
-
+        if (simulation_mode) {
+            std::cout << "Writing fake GPS, count " << count << std::endl;
+        } else {
+            std::cout << "Writing new GPS, count " << count << std::endl;
+        }
         writer.write(posn);
 
         rti::util::sleep(dds::core::Duration(4));
@@ -78,7 +80,7 @@ int main(int argc, char *argv[])
     rti::config::Logger::instance().verbosity(arguments.verbosity);
 
     try {
-        run_example(arguments.domain_id, arguments.sample_count);
+        run_example(arguments.domain_id, arguments.sample_count, arguments.simulation_mode);
     } catch (const std::exception& ex) {
         // This will catch DDS exceptions
         std::cerr << "Exception in run_example(): " << ex.what()
