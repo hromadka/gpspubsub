@@ -29,7 +29,7 @@ using namespace mn::CppLinuxSerial;
 
 using namespace application;
 
-void run_example(unsigned int domain_id, unsigned int sample_count, boolean simulation_mode)
+void run_example(unsigned int domain_id, unsigned int sample_count, bool simulation_mode)
 {
     // DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
     dds::domain::DomainParticipant participant(domain_id);

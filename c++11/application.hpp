@@ -47,6 +47,7 @@ struct ApplicationArguments {
     unsigned int domain_id;
     unsigned int sample_count;
     rti::config::Verbosity verbosity;
+
 	std::string gpsport;
 	bool simulation_mode;
 	int provider_id;
@@ -62,6 +63,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
     unsigned int domain_id = 0;
     unsigned int sample_count = (std::numeric_limits<unsigned int>::max)();
     rti::config::Verbosity verbosity;
+    
 	std::string gpsport = "ttyUSB0";
 	bool simulation_mode = false;
 	int provider_id = 0;
