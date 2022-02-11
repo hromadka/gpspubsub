@@ -48,7 +48,7 @@ struct ApplicationArguments {
     unsigned int sample_count;
     rti::config::Verbosity verbosity;
 
-	//std::string gpsport;
+	std::string gpsport;
 	bool simulation_mode;
 	int provider_id;
 };
