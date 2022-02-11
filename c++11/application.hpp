@@ -86,7 +86,8 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
 				arg_processing++; 
             } else { 
                 std::cerr << "--port option requires a value!" << std::endl;
-                return 1;
+                parse_result = ParseReturn::failure;
+                break;
             } 
             //arg_processing += ;            
         } else if ((argc > arg_processing + 1)
