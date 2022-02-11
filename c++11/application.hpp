@@ -92,6 +92,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                 || strcmp(argv[arg_processing], "--fake") == 0)) {
             simulation_mode = true;  // if flag is used at all, interpret that as directive to use sim mode
             arg_processing += 1;
+            break;
         } else if (strcmp(argv[arg_processing], "-h") == 0
                 || strcmp(argv[arg_processing], "--help") == 0) {
             std::cout << "Example application." << std::endl;
@@ -99,9 +100,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
             parse_result = ParseReturn::exit;
             break;
         } else {
-            std::cout << "yo!" << std::endl;
-            std::cout << "Bad parameter." << std::endl;
-            std::cout << argv[arg_processing] << std::endl;
+            std::cout << "Bad parameter. " << argv[arg_processing] << std::endl;
             show_usage = true;
             parse_result = ParseReturn::failure;
             break;
