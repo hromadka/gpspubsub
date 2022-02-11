@@ -29,6 +29,8 @@ using namespace mn::CppLinuxSerial;
 
 using namespace application;
 
+const float VERSION=0.2;
+
 void run_example(unsigned int domain_id, unsigned int sample_count, bool simulation_mode)
 {
     // DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
@@ -75,6 +77,13 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     setup_signal_handlers();
+
+    std::cout << "GPS publisher example version " << std::to_string(VERSION) << std::endl;
+    std::cout << "Using port /dev/ttyUSB" << std::to_string(arguments.gpsport) << std::endl;
+    std::cout << "ProviderID = " << std::to_string(arguments.provider_id) << std::endl;
+    std::cout << "Simulation Mode = " << std::to_string(arguments.simulation_mode) << std::endl;
+    
+
 
     // Sets Connext verbosity to help debugging
     rti::config::Logger::instance().verbosity(arguments.verbosity);
