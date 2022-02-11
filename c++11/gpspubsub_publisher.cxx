@@ -31,7 +31,7 @@ using namespace application;
 
 const float VERSION=0.2;
 
-void run_example(unsigned int domain_id, unsigned int sample_count, bool simulation_mode)
+void run_example(unsigned int domain_id, unsigned int sample_count, bool simulation_mode, int gpsport)
 {
     // DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
     dds::domain::DomainParticipant participant(domain_id);
@@ -63,7 +63,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 
 	} else {
 		// Create serial port object 
-		SerialPort serialPort("/dev/" + gpsport, BaudRate::B_4800, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
+		SerialPort serialPort("/dev/ttyUSB" + gpsport, BaudRate::B_4800, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
 		serialPort.SetTimeout(-1); // Block when reading until any data is received
 		
 		std::cout << "opening serial port" << std::endl;
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
     rti::config::Logger::instance().verbosity(arguments.verbosity);
 
     try {
-        run_example(arguments.domain_id, arguments.sample_count, arguments.simulation_mode);
+        run_example(arguments.domain_id, arguments.sample_count, arguments.simulation_mode, arguments.gpsport);
     } catch (const std::exception& ex) {
         // This will catch DDS exceptions
         std::cerr << "Exception in run_example(): " << ex.what()
