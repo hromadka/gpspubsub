@@ -99,6 +99,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
             parse_result = ParseReturn::exit;
             break;
         } else {
+            std::cout << "yo!" << std::endl;
             std::cout << "Bad parameter." << std::endl;
             std::cout << argv[arg_processing] << std::endl;
             show_usage = true;
