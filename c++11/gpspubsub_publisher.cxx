@@ -63,7 +63,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 
 	} else {
 		// Create serial port object 
-		SerialPort serialPort("/dev/ttyUSB" + gpsport, BaudRate::B_4800, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
+		SerialPort serialPort("/dev/ttyUSB" + std::to_string(gpsport), BaudRate::B_4800, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
 		serialPort.SetTimeout(-1); // Block when reading until any data is received
 		
 		std::cout << "opening serial port" << std::endl;

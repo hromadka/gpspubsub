@@ -44,7 +44,7 @@ ifndef LINKER
 LINKER = $(COMPILER_PATH)$(GCC_PREFIX)g++
 endif
 LINKER_FLAGS = -m64 $(ADDITIONAL_LINKER_FLAGS)
-SYSLIBS = -ldl -lm -lpthread -lrt -no-pie -rdynamic
+SYSLIBS = -ldl -lm -lpthread -lrt -lCppLinuxSerial -no-pie -rdynamic
 DEFINES = -DRTI_UNIX -DRTI_LINUX -DRTI_64BIT 
 ifndef DEBUG
 DEBUG=0 
