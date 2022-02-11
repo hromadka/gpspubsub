@@ -48,7 +48,7 @@ struct ApplicationArguments {
     unsigned int sample_count;
     rti::config::Verbosity verbosity;
 
-	std::string gpsport;
+	int gpsport;
 	bool simulation_mode;
 	int provider_id;
 };
@@ -63,7 +63,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
     unsigned int sample_count = (std::numeric_limits<unsigned int>::max)();
     rti::config::Verbosity verbosity;
 
-	std::string gpsport = "ttyUSB0";
+	int gpsport = 0;
 	bool simulation_mode = false;
 	int provider_id = 0; 
 
@@ -81,15 +81,8 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
         } else if ((argc > arg_processing + 1)
                 && (strcmp(argv[arg_processing], "-p") == 0
                 || strcmp(argv[arg_processing], "--port") == 0)) {
-            if (arg_processing + 1 < argc) { 
-                gpsport = argv[arg_processing+1];
-				arg_processing++; 
-            } else { 
-                std::cerr << "--port option requires a value!" << std::endl;
-                parse_result = ParseReturn::failure;
-                break;
-            } 
-            //arg_processing += ;            
+            gpsport = atoi(argv[arg_processing + 1]);
+            arg_processing += 2;
         } else if ((argc > arg_processing + 1)
                 && (strcmp(argv[arg_processing], "-s") == 0
                 || strcmp(argv[arg_processing], "--sample-count") == 0)) {
@@ -131,9 +124,9 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                     "    -i, --id-provider  <int>   ProviderID.\n"
                     "                               Range: 0-7 \n"
                     "                               Default: 0\n"
-                    "    -p, --port         <str>   GPS port under /dev/\n"
-                    "                               Range: 'ttyUSB{n}' or similar \n"
-                    "                               Default: 'ttyUSB0' \n"
+                    "    -p, --port         <int>   GPS port at /dev/ttyUSB{n}\n"
+                    "                               Range: the last digit n of 'ttyUSB{n}' \n"
+                    "                               Default: 0 \n"
                     "    -s, --sample-count <int>   Number of samples to receive before\n"\
                     "                               cleanly shutting down. \n"
                     "                               Default: infinite\n"
