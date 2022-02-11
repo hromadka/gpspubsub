@@ -19,6 +19,14 @@
 #include "gpspubsub.hpp"
 #include "application.hpp"  // Argument parsing
 
+#include <CppLinuxSerial/SerialPort.hpp>
+#include <cstring>
+#include <stdlib.h>		// stoi
+#include <locale>		// std::locale, std::tolower
+#include <unistd.h>		// sleep
+
+using namespace mn::CppLinuxSerial;
+
 using namespace application;
 
 void run_example(unsigned int domain_id, unsigned int sample_count)
@@ -42,10 +50,10 @@ void run_example(unsigned int domain_id, unsigned int sample_count)
          !shutdown_requested && count < sample_count;
          count++) {
         // Modify the data to be written here
-	//posn.msg("Hello GPS World! " + std::to_string(count));
-	posn.providerID(1);
-	posn.lat(12.34567);
-	posn.lon(123.45678);
+        //posn.msg("Hello GPS World! " + std::to_string(count));
+        posn.providerID(1);
+        posn.lat(12.34567);
+        posn.lon(123.45678);
 
         std::cout << "Writing GPS, count " << count << std::endl;
 
