@@ -118,6 +118,9 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                     "    -f, --fake         <1>     Use simulation mode.\n"
                     "                               Range: 1 = true \n"
                     "                               Default: false\n"
+                    "    -i, --id-provider  <int>   ProviderID.\n"
+                    "                               Range: 0-7 \n"
+                    "                               Default: 0\n"                    
                     "    -s, --sample-count <int>   Number of samples to receive before\n"\
                     "                               cleanly shutting down. \n"
                     "                               Default: infinite\n"
