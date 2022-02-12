@@ -143,26 +143,28 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                             gps_lat = DEFAULT_LAT;
                             gps_lon = DEFAULT_LON;
                         }
+                    
+
+                        // Create data sample for writing
+                        sample_count = 1;
+                        for (unsigned int tmpcount = 0;
+                            !shutdown_requested && tmpcount < sample_count;
+                            tmpcount++) {
+                            count++;
+                            // parse the NMEA string
+
+
+                            posn.providerID(providerID);
+                            posn.lat(gps_lat);
+                            posn.lon(gps_lon);
+                            std::cout << "Writing 1 new GPS, count " << count << std::endl;
+                            writer.write(posn);
+
+                            //rti::util::sleep(dds::core::Duration(4));
+                        }
+                    } else {
+                        std::cout << "not $GPGGA" << std::endl;
                     }
-
-                    // Create data sample for writing
-                    sample_count = 1;
-                    for (unsigned int tmpcount = 0;
-                        !shutdown_requested && tmpcount < sample_count;
-                        tmpcount++) {
-                        count++;
-                        // parse the NMEA string
-
-
-                        posn.providerID(providerID);
-                        posn.lat(gps_lat);
-                        posn.lon(gps_lon);
-                        std::cout << "Writing 1 new GPS, count " << count << std::endl;
-                        writer.write(posn);
-
-                        //rti::util::sleep(dds::core::Duration(4));
-                    }
-
                     nmea = "";
 
 				}
