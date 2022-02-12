@@ -29,7 +29,6 @@ using namespace mn::CppLinuxSerial;
 
 using namespace application;
 
-const string VERSION="0.2";
 
 void run_example(unsigned int domain_id, unsigned int sample_count, bool simulation_mode, int gpsport)
 {
@@ -155,7 +154,7 @@ int main(int argc, char *argv[])
     }
     setup_signal_handlers();
 
-    std::cout << "GPS publisher example version " << VERSION << std::endl;
+    std::cout << "GPS publisher example version 0.2" << std::endl;
     std::cout << "ProviderID = " << std::to_string(arguments.provider_id) << std::endl;
 	if (arguments.simulation_mode) {
 		std::cout << "Simulation Mode = ON" << std::endl;
