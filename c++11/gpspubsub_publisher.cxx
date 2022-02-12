@@ -109,7 +109,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				if (char_array[i] == '\n') {
 					// do action(s) here
                     nmea = std::string(&char_array[0], &char_array[i]);
-					std::cout << nmea << std::endl;
+					std::cout << "nmea = " << nmea << std::endl;
                     
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
 
@@ -133,7 +133,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				}
 			}
 			
-			std::cout << readData;  // this prints out the full sentence, 1 char at a time
+			//std::cout << readData;  // this prints out the full sentence, 1 char at a time
 		}
 		
 		// Close the serial port
