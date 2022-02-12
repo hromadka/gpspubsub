@@ -97,6 +97,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 		// TODO: add timer to allow graceful exit from while(1)
 		// TODO: use udev library to detect device removal
         unsigned int count = 0;
+        std::string nmea = "";
 		while (1) {
             if (shutdown_requested) { break; }
 			std::string readData;
@@ -107,7 +108,8 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 			for (int i = 0; i < length; i++) {
 				if (char_array[i] == '\n') {
 					// do action(s) here
-					std::cout << std::endl;
+                    nmea = std::string(&char_array[0], &char_array[i]);
+					std::cout << nmea << std::endl;
                     
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
 
@@ -131,7 +133,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				}
 			}
 			
-			std::cout << readData;  // this prints out the full sentence
+			std::cout << readData;  // this prints out the full sentence, 1 char at a time
 		}
 		
 		// Close the serial port
