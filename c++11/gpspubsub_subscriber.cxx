@@ -22,7 +22,7 @@
 
 using namespace application;
 
-int best_providerID = 0;
+const int BEST_PROVIDERID = 1;  // hard-coded for this demo only
 unsigned int counts_since_last_heard_best_provider = 0; 
 
 unsigned int process_data(dds::sub::DataReader<Position>& reader)
@@ -35,7 +35,7 @@ unsigned int process_data(dds::sub::DataReader<Position>& reader)
         if (sample.info().valid()) {
             samples_read++;
             std::cout << sample.data() << std::endl;
-            std::cout << sample.data() << std::endl;
+            std::cout << sample.providerID << std::endl;
 
         }
     }
