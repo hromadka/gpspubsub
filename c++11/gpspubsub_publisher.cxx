@@ -93,7 +93,6 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 		
 		int length = 0;
 		char char_array[1028];
-        std::string nmea = "";
 		// Read some data back (will block until at least 1 byte is received due to the SetTimeout(-1) call above).
 		// TODO: add timer to allow graceful exit from while(1)
 		// TODO: use udev library to detect device removal
@@ -103,9 +102,9 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 			std::string readData;
 			serialPort.Read(readData);
 			strcpy(char_array, readData.c_str());
-            nmea = readData;
 			// look for endline trigger and take action when found
 			length = sizeof(readData);
+            std::cout << length << std::endl;
 			for (int i = 0; i < length; i++) {
 				if (char_array[i] == '\n') {
 					// do action(s) here
@@ -119,7 +118,6 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         tmpcount++) {
                         count++;
                         // parse the NMEA string
-                        std::cout << nmea << std::endl;
                         posn.providerID(1);
                         posn.lat(12.34567);
                         posn.lon(123.45678);
