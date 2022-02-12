@@ -101,6 +101,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
             if (shutdown_requested) { break; }
 			std::string readData;
 			serialPort.Read(readData);
+            std::cout << readData << std:: endl;
 			strcpy(char_array, readData.c_str());
 			// look for endline trigger and take action when found
 			length = sizeof(readData);
@@ -109,7 +110,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				if (char_array[i] == '\n') {
 					// do action(s) here
 					std::cout << std::endl;
-                    std::cout << readData << std:: endl;
+                    
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
 
                     // Create data sample for writing
@@ -132,7 +133,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				}
 			}
 			
-			//std::cout << readData;
+			//std::cout << readData;  // this prints out the full sentence
 		}
 		
 		// Close the serial port
