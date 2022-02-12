@@ -131,7 +131,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				}
 			}
 			
-			std::cout << readData << std::endl;  // this prints out the full sentence
+			std::cout << readData;  // this prints out the full sentence
 		}
 		
 		// Close the serial port
