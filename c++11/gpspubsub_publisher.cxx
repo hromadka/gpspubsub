@@ -131,8 +131,8 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         std::cout << split[0] << std::endl;
                         //TODO: potential problem if these fields aren't here: blank, no reading, missing data, etc.
                         try {
-                            if (sizeof(split[2]) > 0) {
-                                std::cout << split[2] << std::endl;
+                            if (split[2].length() > 0) {
+                                std::cout << split[2] << " * length = " << split[2].length() << std::endl;
                                 gps_lat = std::stof(split[2]);
                             } else {
                                 gps_lat = DEFAULT_LAT;
