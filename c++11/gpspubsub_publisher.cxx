@@ -78,6 +78,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 		// TODO: add timer to allow graceful exit from while(1)
 		// TODO: use udev library to detect device removal
 		while (1) {
+            if (shutdown_requested) { break; }
 			std::string readData;
 			serialPort.Read(readData);
 			strcpy(char_array, readData.c_str());
@@ -107,7 +108,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         }
                         writer.write(posn);
 
-                        rti::util::sleep(dds::core::Duration(4));
+                        //rti::util::sleep(dds::core::Duration(4));
                     }
 
 
