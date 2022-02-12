@@ -21,6 +21,9 @@
 #include <stdlib.h>		// stoi
 #include <locale>		// std::locale, std::tolower
 #include <unistd.h>		// sleep
+#include <vector>       // vector
+#include <iostream>     // stream
+#include <sstream>      // stringstream
 
 using namespace mn::CppLinuxSerial;
 
@@ -113,17 +116,13 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                     for (unsigned int tmpcount = 0;
                         !shutdown_requested && tmpcount < sample_count;
                         tmpcount++) {
-                        // Modify the data to be written here
-                        //posn.msg("Hello GPS World! " + std::to_string(count));
                         count++;
+                        // parse the NMEA string
+                        std::cout << readData << std::endl;
                         posn.providerID(1);
                         posn.lat(12.34567);
                         posn.lon(123.45678);
-                        if (simulation_mode) {
-                            std::cout << "Writing 1 fake GPS, count " << count << std::endl;
-                        } else {
-                            std::cout << "Writing 1 new GPS, count " << count << std::endl;
-                        }
+                        std::cout << "Writing 1 new GPS, count " << count << std::endl;
                         writer.write(posn);
 
                         //rti::util::sleep(dds::core::Duration(4));
