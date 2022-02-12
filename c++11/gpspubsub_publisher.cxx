@@ -103,7 +103,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 			std::string readData;
 			serialPort.Read(readData);
 			strcpy(char_array, readData.c_str());
-            strcpy(nmea, readData);
+            nmea = readData;
 			// look for endline trigger and take action when found
 			length = sizeof(readData);
 			for (int i = 0; i < length; i++) {
