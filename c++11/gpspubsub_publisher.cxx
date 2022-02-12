@@ -98,8 +98,10 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 		// TODO: use udev library to detect device removal
         unsigned int count = 0;
         std::string nmea = "";
-        float gps_lat = 12.345678;
-        float gps_lon = 123.45678;
+        const float DEFAULT_LAT = 12.345678;
+        const float DEFAULT_LON = 123.45678;
+        float gps_lat = DEFAULT_LAT;
+        float gps_lon = DEFAULT_LON;
 		while (1) {
             if (shutdown_requested) { break; }
 			std::string readData;
@@ -127,9 +129,14 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                     }                
                     //std::cout << split[0] << std::endl;
                     if (split[0] == "$GPGGA") {
-                        //TODO: potential problem if these fields aren't here
-                        gps_lat = std::stof(split[2]);
-                        gps_lon = std::stof(split[4]);
+                        //TODO: potential problem if these fields aren't here: blank, no reading, missing data, etc.
+                        try {
+                            gps_lat = std::stof(split[2]);
+                            gps_lon = std::stof(split[4]);
+                        } catch (int e) {
+                            gps_lat = DEFAULT_LAT;
+                            gps_lon = DEFAULT_LON;
+                        }
                     }
 
                     // Create data sample for writing
