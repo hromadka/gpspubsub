@@ -35,7 +35,7 @@ unsigned int process_data(dds::sub::DataReader<Position>& reader)
         if (sample.info().valid()) {
             samples_read++;
             std::cout << sample.data() << std::endl;
-            std::cout << sample.data()[0] << std::endl;
+            std::cout << sample.data().at[0] << std::endl;
 
         }
     }
