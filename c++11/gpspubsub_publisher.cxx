@@ -29,7 +29,7 @@ using namespace mn::CppLinuxSerial;
 
 using namespace application;
 
-const float VERSION=0.2;
+const string VERSION="0.2";
 
 void run_example(unsigned int domain_id, unsigned int sample_count, bool simulation_mode, int gpsport)
 {
@@ -46,20 +46,40 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
     // DataWriter QoS is configured in USER_QOS_PROFILES.xml
     dds::pub::DataWriter<Position> writer(publisher, topic);
 
+    Position posn;
 
 	if (simulation_mode) {
-		while (1) {
+		//while (1) {
 			//"$GPGGA,165125.568,,,,,0,00,,,M,0.0,M,,0000*59"
 			std::string lat = "33.70024";  //PHX
 			std::string lon = "112.09462";  //PHX
 			std::string prefix = "$GPGGA,165125.568,";
 			std::string suffix = "333,00,,,M,0.0,M,,0000*99";
-			std::string rando = std::to_string(rand() % 10);
-			std::string sentence = prefix + lat + rando + ",N," + lon + rando + ",W," + suffix;
-			std::cout << sentence << std::endl;
-			
-			sleep(1);
-		}
+			//std::string rando = std::to_string(rand() % 10);
+			//std::string sentence = prefix + lat + rando + ",N," + lon + rando + ",W," + suffix;
+			//std::cout << sentence << std::endl;
+    
+            // Create data sample for writing
+            for (unsigned int count = 0;
+                !shutdown_requested && count < sample_count;
+                count++) {
+                // Modify the data to be written here
+                //posn.msg("Hello GPS World! " + std::to_string(count));
+                posn.providerID(1);
+    			std::string rando = std::to_string(rand() % 10);
+                posn.lat = atoi(lat + rando);   //posn.lat(12.34567);
+                posn.lon = atoi(lon + rando);   //posn.lon(123.45678);
+
+                std::string sentence = prefix + lat + rando + ",N," + lon + rando + ",W," + suffix;
+                std::cout << sentence << std::endl;
+                std::cout << "Writing fake GPS, count " << count << std::endl;
+
+                writer.write(posn);
+                rti::util::sleep(dds::core::Duration(1));
+            }
+
+			//sleep(1);
+		//}
 
 	} else {
 		// Create serial port object 
@@ -92,7 +112,6 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
 
                     // Create data sample for writing
-                    Position posn;
                     for (unsigned int count = 0;
                         !shutdown_requested && count < sample_count;
                         count++) {
@@ -136,7 +155,7 @@ int main(int argc, char *argv[])
     }
     setup_signal_handlers();
 
-    std::cout << "GPS publisher example version " << std::to_string(VERSION) << std::endl;
+    std::cout << "GPS publisher example version " << VERSION << std::endl;
     std::cout << "ProviderID = " << std::to_string(arguments.provider_id) << std::endl;
 	if (arguments.simulation_mode) {
 		std::cout << "Simulation Mode = ON" << std::endl;
