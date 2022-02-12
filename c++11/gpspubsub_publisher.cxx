@@ -123,7 +123,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         getline( ss, substr, ',' );
                         split.push_back( substr );
                     }                
-                    std::cout << v[0] << std::endl;
+                    std::cout << split[0] << std::endl;
 
                     // Create data sample for writing
                     sample_count = 1;
