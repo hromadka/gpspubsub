@@ -101,11 +101,9 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
             if (shutdown_requested) { break; }
 			std::string readData;
 			serialPort.Read(readData);
-            std::cout << readData << std:: endl;
 			strcpy(char_array, readData.c_str());
 			// look for endline trigger and take action when found
 			length = sizeof(readData);
-
 			for (int i = 0; i < length; i++) {
 				if (char_array[i] == '\n') {
 					// do action(s) here
@@ -133,7 +131,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				}
 			}
 			
-			//std::cout << readData;  // this prints out the full sentence
+			std::cout << readData << std::endl;  // this prints out the full sentence
 		}
 		
 		// Close the serial port
