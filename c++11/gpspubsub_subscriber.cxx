@@ -24,7 +24,7 @@ using namespace application;
 
 const int BEST_PROVIDERID = 1;      // hard-coded for this demo only
 const int FAILOVER_PROVIDERID = 2;  // hard-coded for this demo only
-unsigned int counts_since_last_heard_best_provider = 0; 
+int counts_since_last_heard_best_provider = 0; 
 int g_timeout = 5;
 
 unsigned int process_data(dds::sub::DataReader<Position>& reader)
