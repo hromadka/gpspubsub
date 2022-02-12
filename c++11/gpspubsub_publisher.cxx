@@ -98,6 +98,8 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 		// TODO: use udev library to detect device removal
         unsigned int count = 0;
         std::string nmea = "";
+        float gps_lat = 12.345678;
+        float gps_lon = 123.45678;
 		while (1) {
             if (shutdown_requested) { break; }
 			std::string readData;
@@ -123,7 +125,12 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         getline( ss, substr, ',' );
                         split.push_back( substr );
                     }                
-                    std::cout << split[0] << std::endl;
+                    //std::cout << split[0] << std::endl;
+                    if (split[0] == "$GPGGA") {
+                        //TODO: potential problem if these fields aren't here
+                        gps_lat = std::stof(split[2]);
+                        gps_lon = std::stof(split[4]);
+                    }
 
                     // Create data sample for writing
                     sample_count = 1;
@@ -135,8 +142,8 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 
 
                         posn.providerID(providerID);
-                        posn.lat(12.34567);
-                        posn.lon(123.45678);
+                        posn.lat(gps_lat);
+                        posn.lon(gps_lon);
                         std::cout << "Writing 1 new GPS, count " << count << std::endl;
                         writer.write(posn);
 
