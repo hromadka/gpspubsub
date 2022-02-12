@@ -110,7 +110,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				if (char_array[i] == '\n') {
 					// do action(s) here
                     //nmea = std::string(&char_array[0], &char_array[i]);
-					std::cout << "at " << i << " nmea = " << nmea << std::endl;
+					std::cout << "at " << i << " nmea = " << nmea << std::endl << " *** END *** " << std::endl;
                     
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
 
