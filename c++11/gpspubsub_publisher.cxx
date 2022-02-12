@@ -130,6 +130,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         //rti::util::sleep(dds::core::Duration(4));
                     }
 
+                    nmea = "";
 
 				}
 			}
