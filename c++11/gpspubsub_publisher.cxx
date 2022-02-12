@@ -66,8 +66,8 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                 //posn.msg("Hello GPS World! " + std::to_string(count));
                 posn.providerID(1);
     			std::string rando = std::to_string(rand() % 10);
-                posn.lat = std::stof(lat + rando);   //posn.lat(12.34567);
-                posn.lon = std::stof(lon + rando);   //posn.lon(123.45678);
+                posn.lat(std::stof(lat + rando));   //posn.lat(12.34567);
+                posn.lon(std::stof(lon + rando));   //posn.lon(123.45678);
 
                 std::string sentence = prefix + lat + rando + ",N," + lon + rando + ",W," + suffix;
                 std::cout << sentence << std::endl;
