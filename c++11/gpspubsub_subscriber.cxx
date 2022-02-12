@@ -22,7 +22,8 @@
 
 using namespace application;
 
-const int BEST_PROVIDERID = 1;  // hard-coded for this demo only
+const int BEST_PROVIDERID = 1;      // hard-coded for this demo only
+const int FAILOVER_PROVIDERID = 2;  // hard-coded for this demo only
 unsigned int counts_since_last_heard_best_provider = 0; 
 
 unsigned int process_data(dds::sub::DataReader<Position>& reader)
@@ -34,8 +35,18 @@ unsigned int process_data(dds::sub::DataReader<Position>& reader)
     for (const auto& sample : samples) {
         if (sample.info().valid()) {
             samples_read++;
-            std::cout << sample.data() << std::endl;
-            std::cout << sample.data().providerID() << std::endl;
+            if (sample.data().providerID() == BEST_PROVIDERID) { 
+                std::cout << sample.data() << " *PRIMARY_SOURCE" << std::endl;
+                counts_since_last_heard_best_provider = 0;
+            } else if (counts_since_last_heard_best_provider > timeout && sample.data().providerID() == FAILOVER_PROVIDERID)  {
+                std::cout << sample.data() << " *SECONDARY_SOURCE-->failover" << std::endl;
+                counts_since_last_heard_best_provider++;
+            } else if (counts_since_last_heard_best_provider < timeout) {
+                // print nothing additional
+                counts_since_last_heard_best_provider++;
+            } else {
+                std::cout << sample.data() << " *UNRECOGNIZED_SOURCE-->filter" << std::endl;
+                counts_since_last_heard_best_provider++;
 
         }
     }
@@ -44,7 +55,7 @@ unsigned int process_data(dds::sub::DataReader<Position>& reader)
     return samples_read;
 }
 
-void run_example(unsigned int domain_id, unsigned int sample_count)
+void run_example(unsigned int domain_id, unsigned int sample_count, int timeout)
 {
     // A DomainParticipant allows an application to begin communicating in
     // a DDS domain. Typically there is one DomainParticipant per application.
@@ -102,7 +113,7 @@ int main(int argc, char *argv[])
     rti::config::Logger::instance().verbosity(arguments.verbosity);
 
     try {
-        run_example(arguments.domain_id, arguments.sample_count);
+        run_example(arguments.domain_id, arguments.sample_count, arguments.timeout);
     } catch (const std::exception& ex) {
         // All DDS exceptions inherit from std::exception
         std::cerr << "Exception in run_example(): " << ex.what()
