@@ -129,16 +129,17 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                     }                
                     if (split[0] == "$GPGGA") {
                         std::cout << split[0] << std::endl;
-                        //TODO: potential problem if these fields aren't here: blank, no reading, missing data, etc.
                         try {
                             if (split[2].length() > 0) {
-                                std::cout << split[2] << " * length = " << split[2].length() << std::endl;
                                 gps_lat = std::stof(split[2]);
                             } else {
                                 gps_lat = DEFAULT_LAT;
                             }
-                            std::cout << split[4] << std::endl;
-                            //gps_lon = std::stof(split[4]);
+                            if (split[4].length() > 0) {
+                                gps_lon = std::stof(split[4]);
+                            } else {
+                                gps_lon = DEFAULT_LON;
+                            }
                         } catch (int e) {
                             gps_lat = DEFAULT_LAT;
                             gps_lon = DEFAULT_LON;
@@ -163,7 +164,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                             //rti::util::sleep(dds::core::Duration(4));
                         }
                     } else {
-                        std::cout << "not $GPGGA" << std::endl;
+//                        std::cout << "not $GPGGA" << std::endl;
                     }
                     nmea = "";
 
