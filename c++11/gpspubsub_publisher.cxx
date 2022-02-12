@@ -110,9 +110,20 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 				if (char_array[i] == '\n') {
 					// do action(s) here
                     //nmea = std::string(&char_array[0], &char_array[i]);
-					std::cout << "at " << i << " nmea = " << nmea << std::endl << " *** END *** " << std::endl;
-                    
+					//std::cout << "at " << i << " nmea = " << nmea << std::endl << " *** END *** " << std::endl;
+                    std::cout << nmea << std::endl;
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
+
+                    // parse NMEA string $GPGGA
+                    stringstream ss(nmea);
+                    vector<string> split;
+                    while( ss.good() )
+                    {
+                        string substr;
+                        getline( ss, substr, ',' );
+                        split.push_back( substr );
+                    }                
+                    std::cout << v[0] << std::endl;
 
                     // Create data sample for writing
                     sample_count = 1;
@@ -121,6 +132,8 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         tmpcount++) {
                         count++;
                         // parse the NMEA string
+
+
                         posn.providerID(providerID);
                         posn.lat(12.34567);
                         posn.lon(123.45678);
