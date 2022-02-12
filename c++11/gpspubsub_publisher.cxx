@@ -96,6 +96,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 		// Read some data back (will block until at least 1 byte is received due to the SetTimeout(-1) call above).
 		// TODO: add timer to allow graceful exit from while(1)
 		// TODO: use udev library to detect device removal
+        unsigned int count = 0;
 		while (1) {
             if (shutdown_requested) { break; }
 			std::string readData;
@@ -112,11 +113,12 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 
                     // Create data sample for writing
                     sample_count = 1;
-                    for (unsigned int count = 0;
-                        !shutdown_requested && count < sample_count;
-                        count++) {
+                    for (unsigned int tmpcount = 0;
+                        !shutdown_requested && tmpcount < sample_count;
+                        tmpcount++) {
                         // Modify the data to be written here
                         //posn.msg("Hello GPS World! " + std::to_string(count));
+                        count++;
                         posn.providerID(1);
                         posn.lat(12.34567);
                         posn.lon(123.45678);
