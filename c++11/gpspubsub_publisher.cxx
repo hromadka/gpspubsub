@@ -111,6 +111,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
 
                     // Create data sample for writing
+                    sample_count = 1;
                     for (unsigned int count = 0;
                         !shutdown_requested && count < sample_count;
                         count++) {
@@ -120,9 +121,9 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         posn.lat(12.34567);
                         posn.lon(123.45678);
                         if (simulation_mode) {
-                            std::cout << "Writing fake GPS, count " << count << std::endl;
+                            std::cout << "Writing 1 fake GPS, count " << count << std::endl;
                         } else {
-                            std::cout << "Writing new GPS, count " << count << std::endl;
+                            std::cout << "Writing 1 new GPS, count " << count << std::endl;
                         }
                         writer.write(posn);
 
