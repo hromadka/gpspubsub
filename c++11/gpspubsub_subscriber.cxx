@@ -22,6 +22,9 @@
 
 using namespace application;
 
+int best_providerID = 0;
+unsigned int counts_since_last_heard_best_provider = 0; 
+
 unsigned int process_data(dds::sub::DataReader<Position>& reader)
 {
     // Take all samples.  Samples are loaned to application, loan is
@@ -32,8 +35,11 @@ unsigned int process_data(dds::sub::DataReader<Position>& reader)
         if (sample.info().valid()) {
             samples_read++;
             std::cout << sample.data() << std::endl;
+            std::cout << sample.data().providerID << std::endl;
+            
         }
     }
+
 
     return samples_read;
 }
@@ -75,10 +81,9 @@ void run_example(unsigned int domain_id, unsigned int sample_count)
     while (!shutdown_requested && samples_read < sample_count) {
         // Dispatch will call the handlers associated to the WaitSet conditions
         // when they activate
-        std::cout << "GPSPubSub subscriber sleeping for 2 sec..."
-                  << std::endl;
+        std::cout << "GPSPubSub subscriber sleeping for 1 sec..." << std::endl;
 
-        waitset.dispatch(dds::core::Duration(2));  
+        waitset.dispatch(dds::core::Duration(1));  
     }
 }
 

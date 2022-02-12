@@ -140,6 +140,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                                 gps_lon = DEFAULT_LON;
                             }
                         } catch (int e) {
+                        //} catch (const std::exception& ex) {    
                             gps_lat = DEFAULT_LAT;
                             gps_lon = DEFAULT_LON;
                         }
