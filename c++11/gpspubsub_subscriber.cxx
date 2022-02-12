@@ -26,7 +26,7 @@ const int BEST_PROVIDERID = 1;      // hard-coded for this demo only
 const int FAILOVER_PROVIDERID = 2;  // hard-coded for this demo only
 unsigned int counts_since_last_heard_best_provider = 0; 
 
-unsigned int process_data(dds::sub::DataReader<Position>& reader)
+unsigned int process_data(dds::sub::DataReader<Position>& reader, int timeout)
 {
     // Take all samples.  Samples are loaned to application, loan is
     // returned when LoanedSamples destructor called.
@@ -82,7 +82,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, int timeout)
     // condition is triggered, in the context of the dispatch call (see below)
     unsigned int samples_read = 0;
     status_condition.extensions().handler([&reader, &samples_read]() {
-        samples_read += process_data(reader);
+        samples_read += process_data(reader, timeout);
     });
 
     // Create a WaitSet and attach the StatusCondition
