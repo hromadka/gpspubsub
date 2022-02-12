@@ -47,6 +47,7 @@ unsigned int process_data(dds::sub::DataReader<Position>& reader, int timeout)
             } else {
                 std::cout << sample.data() << " *UNRECOGNIZED_SOURCE-->filter" << std::endl;
                 counts_since_last_heard_best_provider++;
+            }
 
         }
     }
