@@ -48,6 +48,7 @@ struct ApplicationArguments {
 	int gpsport;
 	bool simulation_mode;
 	int provider_id;
+    int timeout;
 };
 
 // Parses application arguments for example.
@@ -63,6 +64,7 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
 	int gpsport = 0;
 	bool simulation_mode = false;
 	int provider_id = 0; 
+    int timeout = 5;
 
     while (arg_processing < argc) {
         if ((argc > arg_processing + 1)
@@ -84,6 +86,11 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                 && (strcmp(argv[arg_processing], "-s") == 0
                 || strcmp(argv[arg_processing], "--sample-count") == 0)) {
             sample_count = atoi(argv[arg_processing + 1]);
+            arg_processing += 2;
+        } else if ((argc > arg_processing + 1)
+                && (strcmp(argv[arg_processing], "-t") == 0
+                || strcmp(argv[arg_processing], "--timeout") == 0)) {
+            timeout = atoi(argv[arg_processing + 1]);
             arg_processing += 2;
         } else if ((argc > arg_processing + 1)
                 && (strcmp(argv[arg_processing], "-v") == 0
@@ -127,13 +134,16 @@ inline ApplicationArguments parse_arguments(int argc, char *argv[])
                     "    -s, --sample-count <int>   Number of samples to receive before\n"\
                     "                               cleanly shutting down. \n"
                     "                               Default: infinite\n"
+                    "    -t, --timeout      <int>   Number of seconds before failover\n"\
+                    "                               to secondary source. \n"
+                    "                               Default: 4\n"                    
                     "    -v, --verbosity    <int>   How much debugging output to show.\n"\
                     "                               Range: 0-5 \n"
                     "                               Default: 0\n"
                 << std::endl;
     }
 
-    return { parse_result, domain_id, sample_count, verbosity, gpsport, simulation_mode, provider_id };
+    return { parse_result, domain_id, sample_count, verbosity, gpsport, simulation_mode, provider_id, timeout };
 }
 
 }  // namespace application
