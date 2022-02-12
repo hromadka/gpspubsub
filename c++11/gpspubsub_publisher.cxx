@@ -115,11 +115,11 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
 
                     // parse NMEA string $GPGGA
-                    stringstream ss(nmea);
-                    vector<string> split;
+                    std::stringstream ss(nmea);
+                    std::vector<std::string> split;
                     while( ss.good() )
                     {
-                        string substr;
+                        std::string substr;
                         getline( ss, substr, ',' );
                         split.push_back( substr );
                     }                
