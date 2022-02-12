@@ -30,7 +30,7 @@ using namespace mn::CppLinuxSerial;
 using namespace application;
 
 
-void run_example(unsigned int domain_id, unsigned int sample_count, bool simulation_mode, int gpsport)
+void run_example(unsigned int domain_id, unsigned int sample_count, bool simulation_mode, int gpsport, int providerID)
 {
     // DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
     dds::domain::DomainParticipant participant(domain_id);
@@ -64,7 +64,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                 count++) {
                 // Modify the data to be written here
                 //posn.msg("Hello GPS World! " + std::to_string(count));
-                posn.providerID(1);
+                posn.providerID(providerID);
     			std::string rando = std::to_string(rand() % 10);
                 posn.lat(std::stof(lat + rando));   //posn.lat(12.34567);
                 posn.lon(std::stof(lon + rando));   //posn.lon(123.45678);
@@ -104,11 +104,12 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
 			strcpy(char_array, readData.c_str());
 			// look for endline trigger and take action when found
 			length = sizeof(readData);
-            std::cout << length << std::endl;
+
 			for (int i = 0; i < length; i++) {
 				if (char_array[i] == '\n') {
 					// do action(s) here
 					std::cout << std::endl;
+                    std::cout << readData << std:: endl;
 					char_array[0] = '\0';  // fix issue with printing newline with every char by clearing buffer
 
                     // Create data sample for writing
@@ -118,7 +119,7 @@ void run_example(unsigned int domain_id, unsigned int sample_count, bool simulat
                         tmpcount++) {
                         count++;
                         // parse the NMEA string
-                        posn.providerID(1);
+                        posn.providerID(providerID);
                         posn.lat(12.34567);
                         posn.lon(123.45678);
                         std::cout << "Writing 1 new GPS, count " << count << std::endl;
@@ -166,7 +167,7 @@ int main(int argc, char *argv[])
     rti::config::Logger::instance().verbosity(arguments.verbosity);
 
     try {
-        run_example(arguments.domain_id, arguments.sample_count, arguments.simulation_mode, arguments.gpsport);
+        run_example(arguments.domain_id, arguments.sample_count, arguments.simulation_mode, arguments.gpsport), arguments.provider_id;
     } catch (const std::exception& ex) {
         // This will catch DDS exceptions
         std::cerr << "Exception in run_example(): " << ex.what()
